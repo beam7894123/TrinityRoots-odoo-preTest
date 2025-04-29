@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Task List View -->
+        <record id="view_todo_task_tree" model="ir.ui.view">
+            <field name="name">todo.task.tree</field>
+            <field name="model">todo.task</field>
+            <field name="arch" type="xml">
+                <list string="To-Do Tasks" decoration-muted="status=='complete'">
+                    <field name="title"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Task Form View -->
+        <record id="view_todo_task_form" model="ir.ui.view">
+            <field name="name">todo.task.form</field>
+            <field name="model">todo.task</field>
+            <field name="arch" type="xml">
+                <form string="To-Do Task">
+                    <header>
+                        <!-- Status Buttons -->
+                        <button name="action_start_progress" string="Start Progress" type="object" class="oe_highlight"
+                                invisible="status not in ['draft']"/>
+                        <button name="action_mark_complete" string="Mark as Done" type="object" class="oe_highlight"
+                                invisible="all_items_done == False or status in ['complete', 'draft']"/>
+                                
+                        <!-- Status Bar -->
+                        <field name="status" widget="statusbar" statusbar_visible="draft,in_progress,complete"/>
+                    </header>
+
+                    <!-- Main Form Content -->
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="title" class="oe_edit_only"/>
+                            <h1><field name="title" placeholder="Task Title..." readonly="status in ['complete']"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="start_datetime" readonly="status in ['complete']"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" readonly="status in ['complete']"/>
+                            </group>
+                            <group>
+                                <field name="end_datetime" readonly="status in ['complete']"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="List" name="checklist">
+                                <field name="item_ids" mode="list" readonly="status in ['complete']">
+                                    <list string="Lists" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="title"/>
+                                        <field name="description"/>
+                                        <field name="is_done" readonly="parent.status not in ['in_progress']"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Attendee" name="attendees">
+                                <field name="attendee_ids" readonly="status == 'complete'">
+                                    <list string="Attendees" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="partner_id"/>
+                                    </list>
+                                    <form string="Attendee">
+                                        <group>
+                                             <field name="partner_id"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                        <!-- Hidden field -->
+                        <field name="all_items_done" invisible="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

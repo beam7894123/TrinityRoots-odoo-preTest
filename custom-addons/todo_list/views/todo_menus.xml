@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Main Window Action -->
+        <record id="action_todo_task_all" model="ir.actions.act_window">
+            <field name="name">All Tasks</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create your first To-Do Task!
+              </p>
+            </field>
+        </record>
+
+        <!-- Uncompleted Tasks -->
+        <record id="action_todo_task_uncompleted" model="ir.actions.act_window">
+            <field name="name">Uncompleted Tasks</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('status', '!=', 'complete')]</field>
+            <field name="context">{'search_default_in_progress': 1, 'search_default_draft': 1}</field>
+             <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No uncompleted tasks found. Yayyy ^w^!
+              </p>
+            </field>
+        </record>
+
+        <!-- Completed Tasks -->
+        <record id="action_todo_task_completed" model="ir.actions.act_window">
+            <field name="name">Completed Tasks</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('status', '=', 'complete')]</field>
+            <field name="context">{'search_default_complete': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_empty">
+                No tasks have been completed yet..
+              </p>
+            </field>
+        </record>
+
+
+        <!-- Menu Structure -->
+        <!-- Top Level Menu -->
+        <menuitem id="menu_todo_root"
+                  name="To-Do List"
+                  web_icon="todo_list,static/description/icon.png"
+                  sequence="10"/>
+
+        <!-- First Level Submenu -->
+        <menuitem id="menu_todo_task_all"
+                  name="All Tasks"
+                  parent="menu_todo_root"
+                  action="action_todo_task_all"
+                  sequence="10"/>
+
+        <menuitem id="menu_todo_task_uncompleted"
+                  name="Uncompleted"
+                  parent="menu_todo_root" 
+                  action="action_todo_task_uncompleted"
+                  sequence="20"/>
+
+        <menuitem id="menu_todo_task_completed"
+                  name="Completed"
+                  parent="menu_todo_root"
+                  action="action_todo_task_completed"
+                  sequence="30"/>
+    </data>
+</odoo>

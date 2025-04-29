@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- prevents overwriting on module update -->
+    <data noupdate="1"> 
+    
+        <record id="tag_work" model="todo.task.tag">
+            <field name="name">Work</field>
+            <field name="color">5</field> <!-- Blue -->
+        </record>
+
+        <record id="tag_event" model="todo.task.tag">
+            <field name="name">Event</field>
+            <field name="color">2</field> <!-- Red  -->
+        </record>
+
+        <record id="tag_achievement" model="todo.task.tag">
+            <field name="name">Life achievement</field>
+            <field name="color">10</field> <!-- Green -->
+        </record>
+
+    </data>
+</odoo>
